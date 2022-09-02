@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+.category-card {
+    background-color: whitesmoke;
+    max-height: 50rem;
+    max-width: 45rem;
+    display: flex;
+    flex-direction: column;
+    margin: .5rem;
+    padding: .5rem;
+  }
+
+.category-card img {
+  height: 15rem;
+  overflow: hidden;
+}
+  
+.category-section {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+}
+  
+@media only screen and (max-width: 600px) {
+  .category-section {
+    grid-template-columns: auto;
+  }
+}
+
+.newProductForm > form > input {
+  display: flex;
+  border: 2px solid black
+}
