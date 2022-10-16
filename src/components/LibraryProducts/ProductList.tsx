@@ -2,54 +2,66 @@ import React, { useState } from 'react';
 import data from './data/products'
 // @ts-ignore
 import Product from './Product.tsx'
-import { useForm } from "react-hook-form";
+// @ts-ignore
+import Button from '../Elements/Button.tsx'
+// @ts-ignore
+import NewProductForm from './NewProductForm.tsx';
 
 function ProductList(props: any) {
-    const { register, handleSubmit } = useForm();
     const [productModal, setProductModal] = useState(false)
     const [createProductForm, setCreateProductForm] = useState(false)
     const [dataFilter, setDataFilter] = useState([])
     const [rows, setRows] = useState([])
     const [dataRows, setDataRows] = useState(data)
     let productDataSelection = props.productDataSelection.toLowerCase()
+    let categoryTitle = props.productDataSelection.charAt(0).toUpperCase() + props.productDataSelection.slice(1)
     function productAdded() {
         alert('product added')
     }
-    function createProduct() {
-        setCreateProductForm(true)
+    function createProductToggle() {
+        console.log(createProductForm)
+        setCreateProductForm(!createProductForm)
     }
     const createProductSubmit = (newProductData: any) => {
         setDataRows(prev => [...prev, newProductData])
+        setCreateProductForm(!createProductForm)
     }
 
-    function productFocus(title: any) {
-        setProductModal(title)
-    }
     const ProductRow = ({ title, price, category }: { title: string, price: number, category: string }) => (
-        <tr onClick={() => productFocus(title)}>
+        <tr className='text-center'>
             <th>{title}</th>
-            <th>${price}</th>
+            <th>$ {price}</th>
             <th>{category}</th>
-            <th><button onClick={productAdded}>Add</button></th>
+            <th className='text-center font-bold text-emerald-700'><button onClick={productAdded}>+</button></th>
         </tr>
     );
-    // productDataSelection == 'all-products' ? dataFilter = data : dataFilter = data.filter(item => item.category == productDataSelection)
-    // let rows = dataFilter.map((rowData) => <ProductRow {...rowData} />);
-    React.useEffect(()=>{
-        // console.log(productDataSelection)
+
+    React.useEffect(() => {
         productDataSelection == 'all-products' ? setDataFilter(dataRows) : setDataFilter(dataRows.filter(item => item.category == productDataSelection))
-    },[dataRows])
-    React.useEffect(()=>{
+    }, [dataRows])
+
+    React.useEffect(() => {
         setRows(dataFilter.map((row) => <ProductRow {...row} />));
-    },[dataFilter])
+    }, [dataFilter])
+
     return (
         <div>
-            <h2>Library of Products</h2>
-            <table>
+            <h2 className="m-5 text-4xl">Products</h2>
+            <h4 className="m-5">Filtered by:</h4>
+            <h2 className='m-5 text-lg'> {categoryTitle} category</h2>
+            {createProductForm &&
+                <div className='flex justify-center'>
+                    <NewProductForm
+                        createProductSubmit={createProductSubmit}
+                        createProductToggle={createProductToggle}
+                    />
+                </div>
+            }
+            <table className='m-5 min-w-[90%]'>
                 <thead>
                     <tr>
-                        <th>Product name</th>
-                        <th>Approximate Price</th>
+                        <th>Product</th>
+                        <th>Average $</th>
                         <th>Category</th>
                         <th>Add</th>
                     </tr>
@@ -58,17 +70,12 @@ function ProductList(props: any) {
                     {rows}
                 </tbody>
             </table>
-            <button onClick={createProduct}>Create new product</button>
-            {createProductForm &&
-                <div className="newProductForm">
-                    <form onSubmit={handleSubmit(createProductSubmit)}>
-                        <input placeholder="title" {...register("title")} />
-                        <input placeholder="aproximate price" {...register("price")} />
-                        <input placeholder="price" {...register("category")} />
-                        <input type="submit" />
-                    </form>
-                </div>
-            }
+            <div className="buttonFooterGeneric">
+                <Button
+                    onClick={() => createProductToggle()}
+                    text="Add new product"
+                />
+            </div>
             {productModal &&
                 <div>
                     <Product

@@ -8,7 +8,6 @@ import { Routes, Route } from "react-router-dom";
 const LibraryProducts = () => {
     const [productDataSelection, setProductDataSelection] = useState('all-products')
     function cardClicked(title:string){
-        console.log('hello')
         setProductDataSelection(title)
     }
     return(
