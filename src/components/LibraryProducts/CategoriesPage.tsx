@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../../index.css'
 import './style.css'
 import data from './data/categories'
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Button from '../Elements/Button.tsx'
 
 function CategoriesPage(props: any) {
+    console.log('hey there')
     const CategoryCard = ({ title, image }: { title: string, image: string }) => (
         <>
             <Link to="/all-products">
@@ -23,10 +24,23 @@ function CategoriesPage(props: any) {
             window.removeEventListener('scroll', isSticky);
         };
     });
+
+    async function getProducts() {
+        await fetch(`http://127.0.0.1:8000/api/products/`)
+        .then(response => response.json())
+        .then(response=>{
+            console.log(response)
+        })
+    }
+
+    useEffect(()=>{
+        getProducts()
+    },[])
+
     const isSticky = (e) => {
         const footer = document.querySelector('.buttonFooterCategoriesPage')
         const scrollTop = window.scrollY
-        scrollTop >=20 ? footer.classList.add('is-sticky') : footer.classList.remove('is-sticky')
+        scrollTop >= 20 ? footer.classList.add('is-sticky') : footer.classList.remove('is-sticky')
     }
     return (
         <>
