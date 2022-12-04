@@ -18,7 +18,6 @@ function NewProductForm(props: any) {
                 <div>
                     <form className="newProductFormForm" onSubmit={handleSubmit(props.createProductSubmit)}>
                         <input className="newProductFormInput" placeholder="Product name" {...register("title")} />
-                        <input className="newProductFormInput" placeholder="Average price" {...register("price")} />
                         <input className="newProductFormInput" placeholder="Category" {...register("category")} />
                         <input className="newProductFormFormSubmit" type="submit" />
                     </form>
